@@ -39,8 +39,8 @@ public class GameEngine extends SurfaceView implements Runnable {
     int VISIBLE_RIGHT;
     int VISIBLE_BOTTOM;
 
-    int MOUSETAP_X;
-    int MOUSETAP_Y;
+    int MOUSETAP_X = 100;
+    int MOUSETAP_Y = 700;
 
     // SPRITES
     Square bullet;
@@ -164,8 +164,8 @@ public class GameEngine extends SurfaceView implements Runnable {
         double yn = (b / d);
 
         // 3. calculate new (x,y) coordinates
-        int newX = this.bullet.getxPosition() + (int) (xn * 15);
-        int newY = this.bullet.getyPosition() + (int) (yn * 15);
+        int newX = this.bullet.getxPosition() + (int) (xn * 80);
+        int newY = this.bullet.getyPosition() + (int) (yn * 80);
         this.bullet.setxPosition(newX);
         this.bullet.setyPosition(newY);
 
