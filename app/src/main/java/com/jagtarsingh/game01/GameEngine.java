@@ -245,7 +245,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             //Draw cage hitboc
 
-            this.cage.getHitbox();
+            this.cage.updateHitbox();
 
             // --------------------------------
 
@@ -265,7 +265,17 @@ public class GameEngine extends SurfaceView implements Runnable {
                     this.bullet.getxPosition() + this.bullet.getWidth(),
                     this.bullet.getyPosition()+this.bullet.getWidth(),paintbrush);
 
+            //bullet hitbox
+            this.bullet.updateHitbox();
 
+            // --------------------------------------------------------
+            // BULLET AND CAGE COLLISION
+            // --------------------------------------------------------
+
+            if(this.bullet.getHitbox().intersect(this.cage.getHitbox()))
+            {
+                Log.d("hit", "its a hit");
+            }
 
 
             holder.unlockCanvasAndPost(canvas);
