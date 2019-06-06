@@ -251,8 +251,8 @@ public class GameEngine extends SurfaceView implements Runnable {
 
                 Log.d("hit", "its a hit");
                 paintbrush.setTextSize(60);
-                paintbrush.setStrokeWidth(5);
-                canvas.drawText("You WIN",this.screenWidth/2,this.screenHeight/2,paintbrush);
+                paintbrush.setColor(Color.RED);
+                canvas.drawText("You WIN",1000,700,paintbrush);
                 catMovingleft = false;
                 catMovingright = false;
                 catHit = true;
@@ -324,6 +324,12 @@ public class GameEngine extends SurfaceView implements Runnable {
             // 2. sparrow
             canvas.drawBitmap(this.sparrow.getImage(), this.sparrow.getxPosition(), this.sparrow.getyPosition(), paintbrush);
 
+            if(catHit == true)
+            {
+                paintbrush.setTextSize(60);
+                paintbrush.setColor(Color.RED);
+                canvas.drawText("You WIN",1000,700,paintbrush);
+            }
             // --------------------------------------------------------
             // draw hitbox on player
             // --------------------------------------------------------
