@@ -273,7 +273,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         //UPDATING SPARROW MOVEMENTS
         // generate a random (x,y) for the cat
-        if(catHit == false) {
+        if(catHit == false || loose == true) {
         Random rand = new Random();
         int nX = rand.nextInt(this.screenWidth/2);
         int nY = rand.nextInt(this.VISIBLE_BOTTOM - 300);
@@ -340,7 +340,7 @@ public class GameEngine extends SurfaceView implements Runnable {
             {
                 paintbrush.setTextSize(60);
                 paintbrush.setColor(Color.RED);
-                canvas.drawText("You WIN",1000,700,paintbrush);
+                canvas.drawText("You WIN",this.VISIBLE_RIGHT/2,this.VISIBLE_BOTTOM/2,paintbrush);
             }
             // --------------------------------------------------------
             // draw hitbox on player
@@ -363,7 +363,7 @@ public class GameEngine extends SurfaceView implements Runnable {
             {
                 paintbrush.setTextSize(60);
                 paintbrush.setColor(Color.RED);
-                canvas.drawText("You Loose", 1000, 700, paintbrush);
+                canvas.drawText("You Loose", this.VISIBLE_RIGHT/2, this.VISIBLE_BOTTOM/2, paintbrush);
             }
 
             // --------------------------------------------------------
