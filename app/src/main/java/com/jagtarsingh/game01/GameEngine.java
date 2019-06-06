@@ -15,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameEngine extends SurfaceView implements Runnable {
     private final String TAG = "SPARROW";
@@ -168,7 +169,16 @@ public class GameEngine extends SurfaceView implements Runnable {
         int newY = this.bullet.getyPosition() + (int) (yn * 80);
         this.bullet.setxPosition(newX);
         this.bullet.setyPosition(newY);
+      //--------------------------------------------------
 
+        //UPDATING SPARROW MOVEMENTS
+        // generate a random (x,y) for the cat
+        Random rand = new Random();
+        int nX = rand.nextInt(this.screenWidth - 200);
+        int nY = rand.nextInt(300);
+
+        this.sparrow.setxPosition(nX);
+        this.sparrow.setyPosition(nY);
 
     }
 
