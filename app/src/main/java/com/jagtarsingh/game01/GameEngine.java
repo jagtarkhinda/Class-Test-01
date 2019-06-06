@@ -85,6 +85,7 @@ public class GameEngine extends SurfaceView implements Runnable {
         this.sparrow = new Sprite(this.getContext(), 500, 200, R.drawable.bird64);
         this.cat = new Sprite(this.getContext(),this.VISIBLE_LEFT,this.VISIBLE_BOTTOM - 180,R.drawable.robot64);
         this.bullet = new Square(context,100,700,50);
+        bullets.add(this.bullet);
     }
 
     @Override
@@ -96,6 +97,11 @@ public class GameEngine extends SurfaceView implements Runnable {
         }
     }
 
+
+    public void makeBullets(){
+        this.bullet = new Square(this.getContext(),100,700,50);
+        bullets.add(this.bullet);
+    }
     // Game Loop methods
 
     long timeNow = 0;
@@ -136,11 +142,11 @@ public class GameEngine extends SurfaceView implements Runnable {
             this.cat.setxPosition(this.cat.getxPosition() - 40);
         }
 
-        if(cat.getxPosition() < this.VISIBLE_LEFT)
+        if(cat.getxPosition() <= this.screenWidth/3)
         {
             catMovingright = true;
         }
-        else if (cat.getxPosition() + this.cat.getImage().getWidth() >= this.VISIBLE_RIGHT)
+        else if (cat.getxPosition() + this.cat.getImage().getWidth() > this.VISIBLE_RIGHT)
         {
             catMovingright = false;
         }
@@ -151,26 +157,40 @@ public class GameEngine extends SurfaceView implements Runnable {
 
 
         // 1. calculate distance between bullet and enemy
-               double a = this.MOUSETAP_X- this.bullet.getxPosition();
-                double b = this.MOUSETAP_Y - this.bullet.getyPosition();
+        for(int i = 0; i< bullets.size(); i++) {
+            double a = this.MOUSETAP_X - this.bullets.get(i).getxPosition();
+            double b = this.MOUSETAP_Y - this.bullets.get(i).getyPosition();
 
-        // d = sqrt(a^2 + b^2)
+            // d = sqrt(a^2 + b^2)
 
-        double d = Math.sqrt((a * a) + (b * b));
+            double d = Math.sqrt((a * a) + (b * b));
 
-        Log.d(TAG, "Distance to enemy: " + d);
+            Log.d(TAG, "Distance to enemy: " + d);
 
-       // 2. calculate xn and yn constants
+            // 2. calculate xn and yn constants
 
-       // (amount of x to move, amount of y to move)
-        double xn = (a / d);
-        double yn = (b / d);
+            // (amount of x to move, amount of y to move)
+            double xn = (a / d);
+            double yn = (b / d);
 
-        // 3. calculate new (x,y) coordinates
-        int newX = this.bullet.getxPosition() + (int) (xn * 80);
-        int newY = this.bullet.getyPosition() + (int) (yn * 80);
-        this.bullet.setxPosition(newX);
-        this.bullet.setyPosition(newY);
+            // 3. calculate new (x,y) coordinates
+            int newX = this.bullets.get(i).getxPosition() + (int) (xn * 80);
+            int newY = this.bullets.get(i).getyPosition() + (int) (yn * 80);
+
+            this.bullets.get(i).setxPosition(newX);
+            this.bullets.get(i).setyPosition(newY);
+
+
+            if(this.bullet.getHitbox().intersect(this.cage.getHitbox()) )
+            {
+                Log.d("hit", "its a hit");
+
+                bullets.remove(i);
+                this.makeBullets();
+
+
+            }
+        }
       //--------------------------------------------------
 
         //UPDATING SPARROW MOVEMENTS
@@ -293,10 +313,8 @@ public class GameEngine extends SurfaceView implements Runnable {
             // BULLET AND CAGE COLLISION
             // --------------------------------------------------------
 
-            if(this.bullet.getHitbox().intersect(this.cage.getHitbox()))
-            {
-                Log.d("hit", "its a hit");
-            }
+
+
 
 
             holder.unlockCanvasAndPost(canvas);
@@ -320,12 +338,15 @@ public class GameEngine extends SurfaceView implements Runnable {
         int userAction = event.getActionMasked();
         //@TODO: What should happen when person touches the screen?
         if (userAction == MotionEvent.ACTION_DOWN) {
+
             MOUSETAP_X = (int)event.getX();
             MOUSETAP_Y = (int)event.getY();
+
 
         }
         else if (userAction == MotionEvent.ACTION_UP) {
             Log.d(TAG, "Person lifted finger");
+
         }
 
         return true;
