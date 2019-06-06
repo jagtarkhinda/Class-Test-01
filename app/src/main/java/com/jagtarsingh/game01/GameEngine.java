@@ -39,6 +39,8 @@ public class GameEngine extends SurfaceView implements Runnable {
     int VISIBLE_TOP;
     int VISIBLE_RIGHT;
     int VISIBLE_BOTTOM;
+    int newX;
+    int newY;
 
     int MOUSETAP_X = 100;
     int MOUSETAP_Y = 700;
@@ -107,27 +109,39 @@ public class GameEngine extends SurfaceView implements Runnable {
     long timeNow = 0;
     long timePast = 0;
     boolean cageMovingright = true;
+    boolean cageMovingleft = true;
     boolean catMovingright = true;
+    boolean cageHit = false;
     public void updateGame() {
 
         // --------------------------------------------------------
         // MOVING CAGE
         // --------------------------------------------------------
-        if(cageMovingright == true)
+        if(cageMovingright == true && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() + 20);
-        }else if (cageMovingright == false)
+        }else if (cageMovingleft == false && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() - 20);
+        }else if(cageHit == true)
+        {
+            catMovingright = false;
+            cageMovingleft = false;
+            this.cage.setyPosition(this.cage.getyPosition() + 50);
         }
 
-        if(cage.getxPosition() < this.VISIBLE_LEFT)
+        if(cage.getxPosition() < this.VISIBLE_LEFT )
         {
+
             cageMovingright = true;
+            cageMovingleft = false;
         }
         else if (cage.getxPosition() + this.cage.getWidth() >= this.VISIBLE_RIGHT)
         {
-            cageMovingright = false;
+
+                cageMovingright = false;
+                cageMovingleft = true;
+
         }
         //----------------------------------------------------------
 
@@ -150,6 +164,8 @@ public class GameEngine extends SurfaceView implements Runnable {
         {
             catMovingright = false;
         }
+
+
 
         // --------------------------------------------------------
         // BULLET MATH
@@ -174,19 +190,32 @@ public class GameEngine extends SurfaceView implements Runnable {
             double yn = (b / d);
 
             // 3. calculate new (x,y) coordinates
-            int newX = this.bullets.get(i).getxPosition() + (int) (xn * 80);
-            int newY = this.bullets.get(i).getyPosition() + (int) (yn * 80);
+            newX = this.bullets.get(i).getxPosition() + (int) (xn * 80);
+            newY = this.bullets.get(i).getyPosition() + (int) (yn * 80);
+
+
 
             this.bullets.get(i).setxPosition(newX);
             this.bullets.get(i).setyPosition(newY);
 
 
+            // --------------------------------------------------------
+            // BULLET AND CAGE COLLISION
+            // --------------------------------------------------------
+
             if(this.bullet.getHitbox().intersect(this.cage.getHitbox()) )
             {
+
+                cageHit = true;
                 Log.d("hit", "its a hit");
 
                 bullets.remove(i);
                 this.makeBullets();
+                MOUSETAP_X = 100;
+                MOUSETAP_Y = 700;
+
+
+
 
 
             }
@@ -309,9 +338,7 @@ public class GameEngine extends SurfaceView implements Runnable {
             //bullet hitbox
             this.bullet.updateHitbox();
 
-            // --------------------------------------------------------
-            // BULLET AND CAGE COLLISION
-            // --------------------------------------------------------
+
 
 
 
