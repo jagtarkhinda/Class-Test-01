@@ -41,6 +41,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     // SPRITES
     Square bullet;
+    Square cage;
     int SQUARE_WIDTH = 100;
 
     Square enemy;
@@ -52,6 +53,8 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     // GAME STATS
     int score = 0;
+
+
 
     public GameEngine(Context context, int screenW, int screenH) {
         super(context);
@@ -72,6 +75,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
 
         // initalize sprites
+        cage = new Square(context,this.VISIBLE_LEFT + 10,this.VISIBLE_TOP + 10,250);
         this.player = new Sprite(this.getContext(), 100, 700, R.drawable.player64);
         this.sparrow = new Sprite(this.getContext(), 500, 200, R.drawable.bird64);
     }
@@ -86,7 +90,30 @@ public class GameEngine extends SurfaceView implements Runnable {
     }
 
     // Game Loop methods
+
+    boolean cageMovingright = true;
     public void updateGame() {
+
+        // --------------------------------------------------------
+        // MOVING CAGE
+        // --------------------------------------------------------
+        if(cageMovingright == true)
+        {
+            this.cage.setxPosition(this.cage.getxPosition() + 40);
+        }else if (cageMovingright == false)
+        {
+            this.cage.setxPosition(this.cage.getxPosition() - 40);
+        }
+
+        if(cage.getxPosition() < this.VISIBLE_LEFT)
+        {
+            cageMovingright = true;
+        }
+        else if (cage.getxPosition() + this.cage.getWidth() >= this.VISIBLE_RIGHT)
+        {
+            cageMovingright = false;
+        }
+
     }
 
 
@@ -147,6 +174,19 @@ public class GameEngine extends SurfaceView implements Runnable {
             paintbrush.setStrokeWidth(5);
             String screenInfo = "Screen size: (" + this.screenWidth + "," + this.screenHeight + ")";
             canvas.drawText(screenInfo, 10, 100, paintbrush);
+
+            // --------------------------------------------------------
+            // draw the cage
+            // --------------------------------------------------------
+
+            paintbrush.setStyle(Paint.Style.STROKE);
+            paintbrush.setColor(Color.RED);
+
+            canvas.drawRect(this.cage.getxPosition(),
+                    this.cage.getyPosition(),
+                    this.cage.getxPosition() + this.cage.getWidth(),
+                    this.cage.getyPosition()+this.cage.getWidth(),paintbrush);
+
 
             // --------------------------------
             holder.unlockCanvasAndPost(canvas);
