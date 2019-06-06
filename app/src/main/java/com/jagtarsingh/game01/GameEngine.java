@@ -172,7 +172,7 @@ public class GameEngine extends SurfaceView implements Runnable {
             // --------------------------------------------------------
             paintbrush.setTextSize(60);
             paintbrush.setStrokeWidth(5);
-            String screenInfo = "Screen size: (" + this.screenWidth + "," + this.screenHeight + ")";
+            String screenInfo = "Width: " + this.screenWidth + " Height: " + this.screenHeight + "";
             canvas.drawText(screenInfo, 10, 100, paintbrush);
 
             // --------------------------------------------------------
