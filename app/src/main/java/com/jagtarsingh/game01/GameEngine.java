@@ -120,7 +120,7 @@ public class GameEngine extends SurfaceView implements Runnable {
         if(cageMovingright == true && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() + 20);
-        }else if (cageMovingleft == false && (cageHit == false))
+        }else if (cageMovingleft == true && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() - 20);
         }else if(cageHit == true)
@@ -142,6 +142,14 @@ public class GameEngine extends SurfaceView implements Runnable {
                 cageMovingright = false;
                 cageMovingleft = true;
 
+        }
+
+        if(cage.getyPosition() + this.cage.getWidth() >= this.VISIBLE_BOTTOM  - 50)
+        {
+            cageHit = false;
+            cageMovingright = false;
+            cageMovingleft = false;
+            cage.setyPosition(cage.getyPosition());
         }
         //----------------------------------------------------------
 
