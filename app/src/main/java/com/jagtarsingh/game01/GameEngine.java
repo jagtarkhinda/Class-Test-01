@@ -98,6 +98,8 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     // Game Loop methods
 
+    long timeNow = 0;
+    long timePast = 0;
     boolean cageMovingright = true;
     boolean catMovingright = true;
     public void updateGame() {
@@ -174,11 +176,20 @@ public class GameEngine extends SurfaceView implements Runnable {
         //UPDATING SPARROW MOVEMENTS
         // generate a random (x,y) for the cat
         Random rand = new Random();
-        int nX = rand.nextInt(this.screenWidth - 200);
-        int nY = rand.nextInt(300);
+        int nX = rand.nextInt(this.screenWidth/2);
+        int nY = rand.nextInt(this.VISIBLE_BOTTOM - 300);
 
-        this.sparrow.setxPosition(nX);
-        this.sparrow.setyPosition(nY);
+
+        // get current time
+        timeNow = System.currentTimeMillis();
+            if ((timeNow - timePast) > 1000) {
+                this.sparrow.setxPosition(nX);
+                this.sparrow.setyPosition(nY);
+                timePast = timeNow;
+            }
+
+
+
 
     }
 
