@@ -33,6 +33,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     private int screenWidth;
     private int screenHeight;
 
+
     // VISIBLE GAME PLAY AREA
     // These variables are set in the constructor
     int VISIBLE_LEFT;
@@ -82,6 +83,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
 
         // initalize sprites
+
         cage = new Square(context,this.VISIBLE_LEFT,this.VISIBLE_TOP,250);
         this.player = new Sprite(this.getContext(), 100, 700, R.drawable.player64);
         this.sparrow = new Sprite(this.getContext(), 500, 200, R.drawable.bird64);
@@ -273,7 +275,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         //UPDATING SPARROW MOVEMENTS
         // generate a random (x,y) for the cat
-        if(catHit == false || loose == true) {
+        if(catHit == false || loose == false) {
         Random rand = new Random();
         int nX = rand.nextInt(this.screenWidth/2);
         int nY = rand.nextInt(this.VISIBLE_BOTTOM - 300);
