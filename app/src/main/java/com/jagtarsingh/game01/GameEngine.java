@@ -116,6 +116,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     boolean catHit = false;
     boolean cageHit = false;
+    boolean loose = false;
     public void updateGame() {
 
         // --------------------------------------------------------
@@ -158,6 +159,10 @@ public class GameEngine extends SurfaceView implements Runnable {
             cageMovingright = false;
             catMovingleft = false;
             cage.setyPosition(cage.getyPosition());
+            if(this.cat.getHitbox().intersect(this.cage.getHitbox() ) == false)
+            {
+                loose = true;
+            }
         }
         //----------------------------------------------------------
 
@@ -177,6 +182,10 @@ public class GameEngine extends SurfaceView implements Runnable {
             catMovingright = false;
             catMovingleft = false;
             this.cat.setxPosition(this.cat.getxPosition());
+            if(this.cat.getHitbox().intersect(this.cage.getHitbox() ) == false)
+            {
+                loose = true;
+            }
         }
 
 
@@ -257,6 +266,7 @@ public class GameEngine extends SurfaceView implements Runnable {
                 catMovingright = false;
                 catHit = true;
             }
+
 
         }
       //--------------------------------------------------
@@ -347,6 +357,14 @@ public class GameEngine extends SurfaceView implements Runnable {
             paintbrush.setStrokeWidth(5);
             String screenInfo = "Width: " + this.screenWidth + " Height: " + this.screenHeight + "";
             canvas.drawText(screenInfo, 10, 100, paintbrush);
+
+            //loose text
+            if(loose == true)
+            {
+                paintbrush.setTextSize(60);
+                paintbrush.setColor(Color.RED);
+                canvas.drawText("You Loose", 1000, 700, paintbrush);
+            }
 
             // --------------------------------------------------------
             // draw the cage
