@@ -110,7 +110,11 @@ public class GameEngine extends SurfaceView implements Runnable {
     long timePast = 0;
     boolean cageMovingright = true;
     boolean cageMovingleft = true;
+
     boolean catMovingright = true;
+    boolean catMovingleft = true;
+
+    boolean catHit = false;
     boolean cageHit = false;
     public void updateGame() {
 
@@ -120,13 +124,15 @@ public class GameEngine extends SurfaceView implements Runnable {
         if(cageMovingright == true && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() + 20);
+
         }else if (cageMovingleft == true && (cageHit == false))
         {
             this.cage.setxPosition(this.cage.getxPosition() - 20);
+
         }else if(cageHit == true)
         {
-            catMovingright = false;
             cageMovingleft = false;
+            cageMovingright = false;
             this.cage.setyPosition(this.cage.getyPosition() + 50);
         }
 
@@ -147,8 +153,10 @@ public class GameEngine extends SurfaceView implements Runnable {
         if(cage.getyPosition() + this.cage.getWidth() >= this.VISIBLE_BOTTOM  - 50)
         {
             cageHit = false;
-            cageMovingright = false;
+            catMovingright = false;
             cageMovingleft = false;
+            cageMovingright = false;
+            catMovingleft = false;
             cage.setyPosition(cage.getyPosition());
         }
         //----------------------------------------------------------
@@ -156,21 +164,33 @@ public class GameEngine extends SurfaceView implements Runnable {
         // --------------------------------------------------------
         // MOVING CAT
         // --------------------------------------------------------
-        if(catMovingright == true)
+        if(catMovingright == true && catHit == false)
         {
             this.cat.setxPosition(this.cat.getxPosition() + 40);
-        }else if (catMovingright == false)
+
+        }else if (catMovingleft == true && catHit == false)
         {
             this.cat.setxPosition(this.cat.getxPosition() - 40);
+
+        }else if(catHit == true)
+        {
+            catMovingright = false;
+            catMovingleft = false;
+            this.cat.setxPosition(this.cat.getxPosition());
         }
+
+
+
 
         if(cat.getxPosition() <= this.screenWidth/3)
         {
             catMovingright = true;
+            catMovingleft = false;
         }
         else if (cat.getxPosition() + this.cat.getImage().getWidth() > this.VISIBLE_RIGHT)
         {
             catMovingright = false;
+            catMovingleft = true;
         }
 
 
@@ -215,18 +235,29 @@ public class GameEngine extends SurfaceView implements Runnable {
             {
 
                 cageHit = true;
-                Log.d("hit", "its a hit");
+
 
                 bullets.remove(i);
                 this.makeBullets();
                 MOUSETAP_X = 100;
                 MOUSETAP_Y = 700;
-
-
-
-
-
             }
+
+            // --------------------------------------------------------
+            // BULLET AND CAT COLLISION
+            // --------------------------------------------------------
+            if(this.cage.getHitbox().intersect(this.cat.getHitbox()) )
+            {
+
+                Log.d("hit", "its a hit");
+                paintbrush.setTextSize(60);
+                paintbrush.setStrokeWidth(5);
+                canvas.drawText("You WIN",this.screenWidth/2,this.screenHeight/2,paintbrush);
+                catMovingleft = false;
+                catMovingright = false;
+                catHit = true;
+            }
+
         }
       //--------------------------------------------------
 
@@ -333,7 +364,7 @@ public class GameEngine extends SurfaceView implements Runnable {
             canvas.drawBitmap(this.cat.getImage(), this.cat.getxPosition(), this.cat.getyPosition(), paintbrush);
 
             //draw cat hitboc
-            this.cat.getHitbox();
+            this.cat.updateHitbox();
 
             // --------------------------------------------------------
             // draw the bullet
