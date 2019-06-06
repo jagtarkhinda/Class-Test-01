@@ -263,20 +263,22 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         //UPDATING SPARROW MOVEMENTS
         // generate a random (x,y) for the cat
+        if(catHit == false) {
         Random rand = new Random();
         int nX = rand.nextInt(this.screenWidth/2);
         int nY = rand.nextInt(this.VISIBLE_BOTTOM - 300);
 
 
         // get current time
-        timeNow = System.currentTimeMillis();
+
+            timeNow = System.currentTimeMillis();
             if ((timeNow - timePast) > 1000) {
                 this.sparrow.setxPosition(nX);
                 this.sparrow.setyPosition(nY);
                 timePast = timeNow;
             }
 
-
+        }
 
 
     }
